@@ -69,9 +69,10 @@ public class ChatHub(UserManager<AppUser> userManager, ApplicationDbContext cont
                             .Where(x =>
                                 (x.ReceiverId == currentUser!.Id && x.SenderId == receiveId) ||
                                 (x.SenderId == currentUser!.Id && x.ReceiverId == receiveId))
-                            .OrderBy(x => x.CreatedAt) // consistent ascending order
+                            .OrderByDescending(x => x.CreatedAt)
                             .Skip((pageNumber - 1) * pageSize)
                             .Take(pageSize)
+                            .OrderBy(x => x.CreatedAt)
                             .Select(x => new MessageResponseDto {
                                 Id = x.Id,
                                 Content = x.Content,

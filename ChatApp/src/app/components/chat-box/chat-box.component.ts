@@ -20,17 +20,14 @@ import { MatIconModule } from '@angular/material/icon';
   templateUrl: './chat-box.component.html',
   styleUrl: './chat-box.component.scss',
 })
-export class ChatBoxComponent implements AfterViewInit, OnChanges {
+export class ChatBoxComponent implements AfterViewInit {
   @ViewChild('chatBox', { read: ElementRef }) public chatBox?: ElementRef;
 
   chatService = inject(ChatService);
   authService = inject(AuthService);
-  private pageNumber = 2;
+  private pageNumber = 1;
 
   constructor() {
-    console.log(this.chatService.chatMessage());
-  }
-  ngOnChanges(changes: SimpleChanges): void {
     console.log(this.chatService.chatMessage());
   }
 

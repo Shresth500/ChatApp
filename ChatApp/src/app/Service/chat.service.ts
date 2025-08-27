@@ -43,9 +43,9 @@ export class ChatService {
     this.isLoading.update(() => true);
     this.hubConnection = new HubConnectionBuilder()
       .withUrl(`${this.hubUrl}?senderId=${senderId || ''}`, {
-        skipNegotiation: true,
+        // skipNegotiation: true,
         accessTokenFactory: () => token,
-        transport: HttpTransportType.WebSockets,
+        // transport: HttpTransportType.WebSockets,
       })
       .configureLogging(LogLevel.Information)
       .withAutomaticReconnect()
@@ -97,31 +97,49 @@ export class ChatService {
         )
       );
     });
-    // this.hubConnection!.on(
-    //   'ReceiveMessageList',
-    //   (messagesFromServer: Message[]) => {
-    //     console.log(messagesFromServer);
-    //     this.chatMessage.update((existing) => {
-    //       const existingIds = new Set(existing.map((m) => m.id));
-    //       const merged = [
-    //         ...messagesFromServer.filter((m) => !existingIds.has(m.id)),
-    //         ...existing,
-    //       ];
-    //       return merged;
-    //     });
-    //   }
-    // );
 
-    this.hubConnection!.on('ReceiveMessageList', (message) => {
-      this.chatMessage.update((messages) => [...message, messages]);
-    });
+    // this.hubConnection!.on('ReceiveMessageList', (message) => {
+    //   this.chatMessage.update((messages) => [...message, ...messages]);
+    // });
 
-    this.hubConnection?.on('ReceiveMessage', (message) => {
+    this.hubConnection!.on(
+      'ReceiveMessageList',
+      (messagesFromServer: Message[]) => {
+        this.chatMessage.update((existing) => {
+          const existingIds = new Set(existing.map((m) => m.id));
+          const merged = [
+            ...messagesFromServer.filter((m) => !existingIds.has(m.id)),
+            ...existing,
+          ];
+          return merged;
+        });
+      }
+    );
+
+    // this.hubConnection?.on('ReceiveMessage', (message) => {
+    //   let audio = new Audio('assets/Notification.mp3');
+    //   audio.play();
+    //   document.title = '(1) New Message';
+    //   this.chatMessage.update((messages) => [...messages, message]);
+    // });
+
+    this.hubConnection?.on('ReceiveMessage', (message: Message) => {
       let audio = new Audio('assets/Notification.mp3');
       audio.play();
       document.title = '(1) New Message';
-      this.chatMessage.update((messages) => [...messages, message]);
+
+      this.chatMessage.update((messages) => {
+        if (
+          messages.some(
+            (m) => m.id === message.id && m.content === message.content
+          )
+        ) {
+          return messages; // already exists
+        }
+        return [...messages, message];
+      });
     });
+
     this.isLoading.update(() => false);
   }
 
