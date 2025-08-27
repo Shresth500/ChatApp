@@ -1,0 +1,22 @@
+@if(chatService.currentOpenChat()){
+<div class="p-3">
+  <div class="flex flex-col text-center items-center mt-3">
+    <img
+      [src]="
+        chatService.currentOpenChat()?.profileImagePath ||
+        'https://randomuser.me/api/portraits/men/1.jpg'
+      "
+      alt="profile pic"
+      class="rounded-full mb-4 w-44 h-44 object-cover"
+    />
+    <div class="ml-3">
+      <p class="text-lg font-semibold">
+        {{ chatService.currentOpenChat()?.fullName | titlecase }}
+      </p>
+      <p class="text-sm text-gray-500">
+        {{ chatService.currentOpenChat()?.userName | titlecase }}
+      </p>
+    </div>
+  </div>
+</div>
+}

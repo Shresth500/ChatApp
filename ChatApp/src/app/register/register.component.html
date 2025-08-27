@@ -1,0 +1,133 @@
+<form class="md:flex justify-center px-20 bg-white gap-10" #userForm="ngForm">
+  <div
+    class="h-auto w-3/5"
+    style="
+      background-image: url(register.svg);
+      background-repeat: no-repeat;
+      background-size: contain;
+      background-color: white;
+      background-position: bottom;
+    "
+  ></div>
+  <div
+    class="bg-white my-10 rounded w-1/4 flex flex-col gap-3 shadow-sm drop-shadow-md"
+  >
+    <div class="text-center">
+      <div class="flex justify-center">
+        <img
+          [src]="profilePicture"
+          alt=""
+          class="rounded-full bg-blue-800 h-24 w-24"
+          object-cover
+        />
+      </div>
+      <div class="text-2xl my-2 font-medium">Register</div>
+    </div>
+    <div class="w-full px-3">
+      <mat-form-field class="w-full" appearance="fill">
+        <mat-label>Email</mat-label>
+        <input
+          matInput
+          [(ngModel)]="email"
+          name="email"
+          placeholder="Email"
+          required
+          #emailModel="ngModel"
+          pattern="^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$"
+        />
+        @if(emailModel.errors?.['required']){
+        <mat-error>Email is required</mat-error>
+        } @if(emailModel.errors?.['pattern']){
+        <mat-error>Invalid email format</mat-error>
+        }
+      </mat-form-field>
+      <mat-form-field class="w-full" appearance="fill">
+        <mat-label>Full Name</mat-label>
+        <input
+          matInput
+          required
+          [(ngModel)]="fullName"
+          name="fullName"
+          placeholder="FullName"
+          #fullNameModel="ngModel"
+        />
+        @if(fullNameModel.errors?.['required']){
+        <mat-error>Full Name is required</mat-error>
+        }
+      </mat-form-field>
+      <mat-form-field class="w-full" appearance="fill">
+        <mat-label>User Name</mat-label>
+        <input
+          matInput
+          required
+          [(ngModel)]="userName"
+          name="userName"
+          placeholder="UserName"
+          #UserNameModels="ngModel"
+        />
+        @if(UserNameModels.errors?.['required']){
+        <mat-error>UserName is required</mat-error>
+        }
+      </mat-form-field>
+      <mat-form-field class="w-full" appearance="fill">
+        <mat-label>Password</mat-label>
+        <input
+          matInput
+          [type]="hide ? 'password' : 'text'"
+          [(ngModel)]="password"
+          name="Password"
+          placeholder="Password"
+          #passwordModel="ngModel"
+          required
+          pattern="^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$"
+        />
+        <button
+          mat-icon-button
+          matSuffix
+          type="button"
+          (click)="hide = !hide"
+          [attr.aria-label]="'Hide password'"
+          [attr.aria-pressed]="!hide"
+        >
+          <mat-icon>{{ hide ? "visibility_off" : "visibility" }}</mat-icon>
+        </button>
+        @if(passwordModel.errors?.['required']){
+        <mat-error>Password is required</mat-error>
+        } @if(passwordModel.errors?.['pattern']){
+        <mat-error
+          >Password must be at least 8 characters, include uppercase, lowercase,
+          number & special character</mat-error
+        >
+        }
+      </mat-form-field>
+
+      <input
+        (change)="onFileSelect($event)"
+        hidden
+        type="file"
+        #pic
+        placeholder="Profile Image"
+      />
+      <button
+        (click)="pic.click()"
+        type="button"
+        class="w-full flex items-center gap-2 justify-center mb-5 bg-green-900 text-white rounded-md p-2"
+      >
+        <mat-icon>add_a_photo</mat-icon>
+        <span>Upload Image</span>
+      </button>
+      <button
+        type="submit"
+        [disabled]="!userForm.valid"
+        (click)="register()"
+        class="w-full mb-5 bg-blue-900 text-white rounded-md p-2 disabled:opacity-30 shadow-md"
+      >
+        Register
+      </button>
+      <p class="font-bold text-xs text-center">
+        Already have an Account?
+        <a [routerLink]="'/login'" class="text-blue-500">login</a>
+      </p>
+    </div>
+  </div>
+</form>

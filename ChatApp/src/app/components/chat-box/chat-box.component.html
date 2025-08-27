@@ -1,0 +1,58 @@
+<!-- {{ chatService.chatMessage() | json }} -->
+<div
+  #chatBox
+  class="chat-box flex flex-col flex-1 chat-box py-2 px-3 overflow-y-auto"
+>
+  <!-- Load more button (sticky on top) -->
+  @if (chatService.chatMessage().length > 5) {
+  <div class="sticky top-0 z-10 bg-transparent text-center py-1">
+    <button
+      (click)="loadMoreMessages()"
+      class="text-gray-500 text-xs shadow px-4 py-1 rounded-full bg-gray-200 hover:text-gray-700 focus:outline-none flex items-center gap-2 mx-auto"
+    >
+      @if (chatService.isLoading()) {
+      <mat-spinner diameter="16" strokeWidth="3"></mat-spinner>
+      Loading... } @else { Load more }
+    </button>
+  </div>
+  } @for (item of chatService.chatMessage(); track item.id) { @if (item.senderId
+  !== authService.CurrentLoginUser?.id) {
+  <div class="flex items-end gap-2 mb-3">
+    <img
+      [src]="chatService.currentOpenChat()?.profileImagePath"
+      alt="chatService.currentOpenChat()?.fullName"
+      class="h-8 w-8 rounded-full object-cover border"
+    />
+    <div class="bg-white p-3 rounded-xl shadow-sm max-w-[75%]">
+      <span class="text-sm text-gray-800 block">{{ item.content }}</span>
+      <span class="text-right text-gray-400 text-[10px] block mt-1">
+        {{ item.createdAt | date : "short" }}
+      </span>
+    </div>
+  </div>
+  } @else {
+  <div class="flex justify-end items-end gap-2 mb-3">
+    <div class="bg-blue-600 text-white p-3 rounded-xl shadow-sm max-w-[75%]">
+      <span class="text-sm block">{{ item.content }}</span>
+      <span class="text-right text-gray-200 text-[10px] block mt-1">
+        {{ item.createdAt | date : "short" }}
+      </span>
+    </div>
+    <img
+      [src]="authService.CurrentLoginUser?.profileImagePath"
+      alt="chatService.CurrentLoginUser?.fullName"
+      class="h-8 w-8 rounded-full object-cover border"
+    />
+  </div>
+  } } @empty {
+  <div class="flex flex-col items-center justify-center flex-1 py-10">
+    @if (chatService.isLoading()) {
+    <mat-spinner diameter="40" strokeWidth="3"></mat-spinner>
+    <p class="text-gray-500 mt-2 text-sm">Loading messages...</p>
+    } @else {
+    <mat-icon class="text-gray-400 text-6xl chat-icon">chat</mat-icon>
+    <h6 class="text-center text-gray-500 mt-2">No Messages Yet</h6>
+    }
+  </div>
+  }
+</div>
