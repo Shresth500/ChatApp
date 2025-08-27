@@ -1,0 +1,47 @@
+WebChat/.vs
+WebChat/WebChat/bin
+WebChat/WebChat/obj
+
+
+# compiled output
+ChatApp/dist
+ChatApp/out-tsc
+ChatApp/tmp
+
+# dependencies
+ChatApp/node_modules
+
+# IDEs and editors
+ChatApp/.vscode/
+ChatApp/.idea/
+ChatApp/*.suo
+ChatApp/*.ntvs*
+ChatApp/*.njsproj
+ChatApp/*.sln
+ChatApp/*.sw?
+
+# misc
+ChatApp/.DS_Store
+ChatApp/Thumbs.db
+
+# Angular build and cache
+ChatApp/.angular/cache
+ChatApp/.angular/cache/*
+ChatApp/.angular/*
+
+# environment files (if you keep secrets here — recommended to exclude!)
+ChatApp/src/environments/environment*.ts
+
+# logs
+ChatApp/npm-debug.log*
+ChatApp/yarn-debug.log*
+ChatApp/yarn-error.log*
+ChatApp/pnpm-debug.log*
+
+# coverage reports
+ChatApp/coverage
+
+# package manager lock files (optional, depends on team policy)
+# yarn.lock
+# package-lock.json
+# pnpm-lock.yaml
