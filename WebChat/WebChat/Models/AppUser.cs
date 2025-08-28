@@ -11,4 +11,6 @@ public class AppUser : IdentityUser
     public string? ProfileImagePath { get; set; }
     public string? ImageExtension { get; set; }
     public long ImageSizeInBytes { get; set; }
+    public List<Status>? UserStatus { get; set; }
+    public List<StatusUpdate>? UpdatedStatus{ get; set; }
 }
